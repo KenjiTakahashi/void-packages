@@ -1,0 +1,20 @@
+# Template file for 'universal-ctags-git'
+pkgname=universal-ctags-git
+version=20170629
+revision=1
+build_style=gnu-configure
+hostmakedepends="autoconf pkg-config automake"
+makedepends=""
+depends=""
+short_desc="A maintained ctags implementation"
+maintainer="KenjiTakahashi <wozniakk@gmail.com>"
+license="GPL-2"
+homepage="https://ctags.io"
+_githash=53e7958661fd55259fc7b2518a2684acd2f4a7b2
+distfiles="https://github.com/universal-ctags/ctags/archive/${_githash}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=04ccbf87539013d548ffe9967f0598cbfaa784a051b05c01bfed0a3a212df3fc
+wrksrc="ctags-${_githash}"
+
+pre_configure() {
+    ./autogen.sh
+}
