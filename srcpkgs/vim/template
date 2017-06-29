@@ -13,7 +13,7 @@ license="Vim"
 distfiles="https://github.com/vim/vim/archive/v${version}.tar.gz"
 checksum=2bd06910e407208ba2d8ed2ee864e8f70b875e794f8612f5c3c371c10ee1e204
 
-subpackages="xxd vim-common vim-x11 gvim"
+subpackages="xxd vim-common vim-x11 gvim vim-x11-python"
 # XXX vim-huge cannot be cross compiled for now.
 if [ -z "$CROSS_BUILD" ]; then
 	subpackages+=" vim-huge vim-huge-python3 gvim-huge"
@@ -56,6 +56,9 @@ do_configure() {
 	# X11 version.
 	cd $wrksrc/vim-x11
 	./configure ${configure_args} ${args} ${nohuge_args} --enable-gui=no --with-x
+
+	cd $wrksrc/vim-x11-python
+	./configure ${configure_args} ${args} ${nohuge_args} --enable-gui=no --with-x --enable-pythoninterp
 
 	# GTK+ version.
 	cd $wrksrc/gvim
@@ -139,6 +142,15 @@ vim-x11_package() {
 	alternatives="vim:vim:/usr/bin/vim-x11"
 	pkg_install() {
 		vbin $wrksrc/vim-x11/src/vim vim-x11
+	}
+}
+vim-x11-python_package() {
+	depends="vim-common-${version}_${revision} python"
+	provides="vim-${version}_${revision}"
+	short_desc+=" - with access to X11 selection and python"
+	alternatives="vim:vim:/usr/bin/vim-x11-python"
+	pkg_install() {
+		vbin $wrksrc/vim-x11-python/src/vim vim-x11-python
 	}
 }
 gvim_package() {
